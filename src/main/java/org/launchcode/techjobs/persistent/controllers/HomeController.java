@@ -3,6 +3,7 @@ package org.launchcode.techjobs.persistent.controllers;
 import jakarta.validation.Valid;
 import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Job;
+import org.launchcode.techjobs.persistent.models.Skill;
 import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
 import org.launchcode.techjobs.persistent.models.data.JobRepository;
 import org.launchcode.techjobs.persistent.models.data.SkillRepository;
@@ -33,7 +34,7 @@ public class HomeController {
     public String index(Model model) {
 
         model.addAttribute("title", "MyJobs");
-
+        model.addAttribute("jobs", jobRepository.findAll());
         return "index";
     }
 
@@ -48,12 +49,12 @@ public class HomeController {
 
     @PostMapping("add")
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
-                                       Errors errors, Model model, @RequestParam int employerId) {
+                                       Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
 
-        System.out.println(employerId);
+        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills); //get skills list from skills(sent as ids)
+        System.out.println(skillObjs);
 
         Optional<Employer> result = employerRepository.findById(employerId); //get Employer from employerId (working)
-        System.out.println(result);
 
         if (errors.hasErrors()) { //__________!!!!is there errors? trouble with @notnull in Jobs' employer field
 	        model.addAttribute("title", "Add Job");
@@ -65,13 +66,19 @@ public class HomeController {
         }
 
         Employer employer = result.get(); // get employer from Optional<Employer> result above (working)
- //       System.out.println(employer);
 
-//        if(employer.isPresent()){
-//            System.out.println("good job!");
-//        }
-        newJob.setEmployer(employer); //set the employer to the job (working)
- //       System.out.println(newJob.getEmployer());
+//     from testProcessAddJobFormHandlesSkillsProperly
+//        new Expectations() {{
+//            skillRepository.findAllById((Iterable<Integer>) any);
+//            job.setSkills((List<Skill>) any); //_______________________missing this invocation?? I have that below though.
+//        }};
+
+
+        newJob.setEmployer(employer); //set employer to the job (working)
+        newJob.setSkills(skillObjs); //set skill list to the job
+
+        System.out.println(newJob.getEmployer());
+        System.out.println(newJob.getSkills());
 
         jobRepository.save(newJob); //save job to repository (working)
 

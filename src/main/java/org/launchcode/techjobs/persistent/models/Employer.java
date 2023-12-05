@@ -23,7 +23,7 @@ public class Employer extends AbstractEntity {
     private String location;
 
 
-    @OneToMany //________________________________________One to Many
+    @OneToMany (cascade = CascadeType.ALL) //________________________________________One to Many, cascade?
     @JoinColumn(name="employer_id")
     private final List<Job> jobs = new ArrayList<>();
 
