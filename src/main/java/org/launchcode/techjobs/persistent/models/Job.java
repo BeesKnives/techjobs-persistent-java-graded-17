@@ -12,8 +12,9 @@ public class Job extends AbstractEntity {
 
 
    //
-    @ManyToOne  //______________________________________Many to One
-    @NotNull(message="Employer is required")  //_______________________is this necessary?
+      //______________________________________Many to One
+    //@NotNull(message="Employer is required")  //_______________________is this necessary?
+   @ManyToOne
     private Employer employer;
 
     @ManyToMany //_______________________________________Many to Many
