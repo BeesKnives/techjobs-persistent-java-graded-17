@@ -51,7 +51,7 @@ public class HomeController {
     public String processAddJobForm(@ModelAttribute @Valid Job newJob, //where is it getting this new job?? the above method?
                                        Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
 
-        System.out.println(errors);
+//        System.out.println(errors);
         List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills); //get skills list from skills(sent as ids)
 
 
@@ -84,8 +84,8 @@ public class HomeController {
         newJob.setEmployer(employer); //set employer to the job (working)
         newJob.setSkills(skillObjs); //set skill list to the job
 
-        System.out.println(newJob.getEmployer());
-        System.out.println(newJob.getSkills());
+//        System.out.println(newJob.getEmployer());
+//        System.out.println(newJob.getSkills());
 
         jobRepository.save(newJob); //save job to repository (working)
 

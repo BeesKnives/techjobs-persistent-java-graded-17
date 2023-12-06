@@ -14,19 +14,22 @@ import java.util.List;
 @Entity
 public class Employer extends AbstractEntity {
 
-    public Employer(){
-
-    }
-
     @NotNull(message = "Location required.")
     @Size(max = 60, message = "Location name is too long.")
     private String location;
 
-
-    @OneToMany (cascade = CascadeType.ALL) //________________________________________One to Many, cascade?
+    @OneToMany  //________________________________________One to Many, cascade?
     @JoinColumn(name="employer_id")
-    private final List<Job> jobs = new ArrayList<>();
+    public final List<Job> jobs = new ArrayList<>();//try public instead of private
 
+
+    public Employer(){
+
+    }
+
+    public Employer(String location){
+        this.location = location;
+    }
 
 
     public String getLocation() {
